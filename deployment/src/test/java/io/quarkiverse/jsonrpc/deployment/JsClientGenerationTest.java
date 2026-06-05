@@ -17,7 +17,7 @@ public class JsClientGenerationTest extends JsClientTestBase {
             .withApplicationRoot(root -> {
                 root.addClasses(HelloResource.class, PojoResource.class, Pojo.class, Pojo2.class);
             })
-            .overrideConfigKey("quarkus.json-rpc.client.enabled", "true");
+            .overrideConfigKey("quarkus.json-rpc.js-client.enabled", "true");
 
     @Test
     public void testClientLibraryIsServed() throws Exception {
@@ -63,4 +63,5 @@ public class JsClientGenerationTest extends JsClientTestBase {
         Assertions.assertTrue(body.contains("pojoMulti: (params) => client.subscribe('PojoResource#pojoMulti'"),
                 "Multi methods on PojoResource should use client.subscribe()");
     }
+
 }
