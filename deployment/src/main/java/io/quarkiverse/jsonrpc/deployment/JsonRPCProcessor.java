@@ -54,6 +54,7 @@ import io.quarkus.deployment.builditem.CombinedIndexBuildItem;
 import io.quarkus.deployment.builditem.FeatureBuildItem;
 import io.quarkus.deployment.builditem.nativeimage.ReflectiveClassBuildItem;
 import io.quarkus.deployment.pkg.builditem.CurateOutcomeBuildItem;
+import io.quarkus.deployment.util.IoUtil;
 import io.quarkus.devui.spi.JsonRPCProvidersBuildItem;
 import io.quarkus.devui.spi.buildtime.BuildTimeActionBuildItem;
 import io.quarkus.devui.spi.page.CardPageBuildItem;
@@ -317,7 +318,7 @@ public class JsonRPCProcessor {
             staticResourceProducer.produce(
                     new GeneratedStaticResourceBuildItem(
                             "/_static/quarkus-json-rpc/jsonrpc-client.js",
-                            is.readAllBytes()));
+                            IoUtil.readBytes(is)));
         } catch (IOException e) {
             throw new UncheckedIOException(e);
         }
@@ -333,7 +334,7 @@ public class JsonRPCProcessor {
 
     private String generateTypedProxy(Map<JsonRPCMethodName, JsonRPCMethod> methodsMap, String wsPath) {
         StringBuilder js = new StringBuilder();
-        js.append("import { JsonRPCClient } from '/_static/quarkus-json-rpc/jsonrpc-client.js';\n\n");
+        js.append("import { JsonRPCClient } from '@quarkiverse/json-rpc';\n\n");
         js.append("export const client = new JsonRPCClient({ path: '").append(escapeJsString(wsPath)).append("' });\n\n");
 
         // Group methods by scope and method name (sorted for deterministic output).
